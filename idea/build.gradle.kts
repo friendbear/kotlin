@@ -5,7 +5,7 @@ plugins {
     id("jps-compatible")
 }
 
-repositories {
+repositories.withRedirector(project) {
     maven("https://dl.bintray.com/jetbrains/markdown")
 }
 
