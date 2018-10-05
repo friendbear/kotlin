@@ -23,7 +23,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import org.jetbrains.kotlin.descriptors.ParameterDescriptor
-import org.jetbrains.kotlin.descriptors.PropertyDescriptor
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationUseSiteTarget
 import org.jetbrains.kotlin.descriptors.annotations.KotlinTarget
 import org.jetbrains.kotlin.idea.caches.resolve.analyze
@@ -101,7 +100,7 @@ class MovePropertyToConstructorIntention :
             }
         } else {
             val typeText =
-                element.typeReference?.text ?: (element.resolveToDescriptorIfAny() as? PropertyDescriptor)?.type?.render() ?: return
+                element.typeReference?.text ?: element.resolveToDescriptorIfAny()?.type?.render() ?: return
             val parameterText = buildString {
                 element.modifierList?.getModifiersText()?.let(this::append)
                 propertyAnnotationsText?.takeIf(String::isNotBlank)?.let { appendWithSpaceBefore(it) }

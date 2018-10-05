@@ -27,7 +27,6 @@ import org.jetbrains.kotlin.extensions.DeclarationAttributeAltererExtension
 import org.jetbrains.kotlin.idea.caches.resolve.analyze
 import org.jetbrains.kotlin.idea.caches.resolve.resolveToDescriptorIfAny
 import org.jetbrains.kotlin.idea.references.mainReference
-import org.jetbrains.kotlin.idea.search.usagesSearch.descriptor
 import org.jetbrains.kotlin.idea.util.IdeDescriptorRenderers
 import org.jetbrains.kotlin.lexer.KtModifierKeywordToken
 import org.jetbrains.kotlin.lexer.KtTokens
@@ -253,19 +252,14 @@ fun KtModifierListOwner.setVisibility(visibilityModifier: KtModifierKeywordToken
 }
 
 fun KtDeclaration.implicitVisibility(): KtModifierKeywordToken? {
-    if (this is KtPropertyAccessor && this.isSetter) {
-        val property = this.property
-        if (property.hasModifier(KtTokens.OVERRIDE_KEYWORD)) {
-            val visibility = (property.descriptor as? PropertyDescriptor)
-                ?.overriddenDescriptors
-                ?.firstOrNull()
-                ?.setter
-                ?.visibility
-                ?.toKeywordToken()
-            if (visibility != null) return visibility
-        }
-    }
     return when {
+        this is KtPropertyAccessor && isSetter && property.hasModifier(KtTokens.OVERRIDE_KEYWORD) -> {
+            (property.resolveToDescriptorIfAny() as? PropertyDescriptor)?.overriddenDescriptors?.forEach {
+                val visibility = it.setter?.visibility?.toKeywordToken()
+                if (visibility != null) return visibility
+            }
+            KtTokens.DEFAULT_VISIBILITY_KEYWORD
+        }
         this is KtConstructor<*> -> {
             val klass = getContainingClassOrObject()
             if (klass is KtClass && (klass.isEnum() || klass.isSealed())) KtTokens.PRIVATE_KEYWORD

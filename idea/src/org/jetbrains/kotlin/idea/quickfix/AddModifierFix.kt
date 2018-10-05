@@ -22,7 +22,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiNameIdentifierOwner
 import org.jetbrains.kotlin.builtins.KotlinBuiltIns
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
-import org.jetbrains.kotlin.descriptors.PropertyDescriptor
 import org.jetbrains.kotlin.diagnostics.Diagnostic
 import org.jetbrains.kotlin.diagnostics.Errors
 import org.jetbrains.kotlin.idea.caches.resolve.analyze
@@ -167,7 +166,7 @@ open class AddModifierFix(
             if (!property.isVar) return null
 
             val descriptor = property.resolveToDescriptorIfAny(BodyResolveMode.FULL) ?: return null
-            val type = (descriptor as? PropertyDescriptor)?.type ?: return null
+            val type = descriptor.type
 
             if (TypeUtils.isNullableType(type)) return null
             if (KotlinBuiltIns.isPrimitiveType(type)) return null
