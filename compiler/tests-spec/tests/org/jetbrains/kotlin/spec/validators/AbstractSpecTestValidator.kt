@@ -114,7 +114,7 @@ abstract class AbstractSpecTestValidator<T : AbstractSpecTest>(private val testD
         private val testCaseInfoRegex = """(?<infoElements>CASE DESCRIPTION:[\s\S]*?$lineSeparator)$lineSeparator*"""
         private val testPathBaseRegexTemplate =
             """^.*?$pathSeparator(?<testArea>diagnostics|psi|(?:codegen${pathSeparator}box))$pathSeparator%s"""
-        val testPathRegexTemplate = """$testPathBaseRegexTemplate$pathSeparator(?<testType>pos|neg)/%s$"""
+        val testPathRegexTemplate = """$testPathBaseRegexTemplate$pathSeparator(?<testType>pos|neg)$pathSeparator%s$"""
         val testCaseInfoSingleLinePattern: Pattern = Pattern.compile(SINGLELINE_COMMENT_REGEX.format(testCaseInfoRegex))
         val testCaseInfoMultilinePattern: Pattern = Pattern.compile(MULTILINE_COMMENT_REGEX.format(testCaseInfoRegex))
 

@@ -53,7 +53,7 @@ class NotLinkedSpecTestValidator(testDataFile: File) : AbstractSpecTestValidator
 
     companion object : SpecTestValidatorHelperObject {
         override val pathPartRegex =
-            """${SpecTestLinkedType.NOT_LINKED.testDataPath}$pathSeparator(?<sections>[\w-]+)$pathSeparator(?<categories>(?:[\w-]+)(?:/[\w-]+)*?)"""
+            """${SpecTestLinkedType.NOT_LINKED.testDataPath}$pathSeparator(?<sections>[\w-]+)$pathSeparator(?<categories>(?:[\w-]+)(?:$pathSeparator[\w-]+)*?)"""
         override val filenameRegex = """(?<testNumber>$INTEGER_REGEX)\.kt"""
         override fun getPathPattern(): Pattern = Pattern.compile(testPathRegexTemplate.format(pathPartRegex, filenameRegex))
     }
