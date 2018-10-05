@@ -173,7 +173,6 @@ private fun KtQualifiedExpression.collectCallExpression(context: BindingContext)
         .dropWhile { !it.isTransformationOrTermination(context) }
         .takeWhile { it.isTransformationOrTermination(context) && !it.hasReturn() }
         .toList()
-        .dropLastWhile { it.calleeExpression?.text == "groupingBy" }
     if (transformationCalls.size < 2) return emptyList()
 
     return transformationCalls
@@ -262,7 +261,6 @@ private val terminations = listOf(
     "foldIndexed",
     "groupBy",
     "groupByTo",
-    "groupingBy",
     "indexOf",
     "indexOfFirst",
     "indexOfLast",
